@@ -1,5 +1,5 @@
 # AIMS: Adaptive Intelligent Multi-objective Scheduling System
-# https://colab.research.google.com/github/myandelaepu/AIMS_Scheduler_DigitalTwin/blob/main/AIMS_Scheduler_DigitalTwin11.ipynb
+# https://colab.research.google.com/github/myandelaepu/AIMS_Scheduler_DigitalTwin/blob/main/AIMS_Scheduler_DigitalTwin.ipynb
 # Overview
 # AIMS (Adaptive Intelligent Multi-objective Scheduling System) is an advanced HPC (High Performance Computing) scheduler that integrates Digital Twin technology with Deep Reinforcement Learning for multi-objective optimization. The system optimizes three key objectives:
 

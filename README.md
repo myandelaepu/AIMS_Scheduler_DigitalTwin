@@ -1,75 +1,226 @@
-# AIMS_Scheduler_DigitalTwin
-
-# AIMS: Uncertainty-Aware Multi-Objective HPC Scheduling with Digital Twins
+# AIMS: Adaptive Intelligent Multi-objective Scheduling System
+# https://colab.research.google.com/github/myandelaepu/AIMS_Scheduler_DigitalTwin/blob/main/AIMS_Scheduler_DigitalTwin.ipynb
 # Overview
-# AIMS (AI-driven Multi-objective Scheduler) is a deep reinforcement learning framework designed for adaptive HPC resource scheduling. It integrates digital twin technologies with uncertainty-aware optimization to simultaneously improve energy efficiency, system reliability, and job throughput on large-scale HPC systems.
-# AIMS introduces a multi-model digital twin architecture featuring:
-1.) 	LSTM-based fault prediction
-2.) 	CNN-LSTM hybrid for energy forecasting
-3.) 	Ensemble neural networks for performance prediction
-4.) Physics-informed modeling for thermal regulation
-# It also incorporates a Double Dueling Deep Q-Network (D3QN) with adaptive multi-objective weight evolution to dynamically manage trade-offs across competing HPC goals.
-# Tested on real-world job traces (389,620 jobs) from Argonne’s Aurora, Polaris, Mira, and Cooley systems, AIMS outperforms state-of-the-art schedulers in:
-a) +16.2% Energy Efficiency
-b)	 +14.7% System Reliability
-c)	 +21.6% Job Throughput
-d) 	 −16.9% Performance Variability
-#  Core Components
-# 	Digital Twin Models
-1.) PredictiveFaultModel: LSTM + Attention for fault prediction
-2.) 	EnergyPredictionModel: CNN-LSTM fusion for energy forecasting
-3.) 	PerformancePredictionModel: Ensemble MLPs with uncertainty estimation
-4.) 	PhysicsInformedThermalModel: Domain-aware thermal dynamics estimation
-# 	Scheduler Logic
-1.) 	AIMSScheduler: Integrates all digital twins into a reinforcement learning loop
-2.) 	DoubleDuelingDQN: Learns optimal actions using uncertainty-weighted reward aggregation
-# Baseline Comparisons
-1.) 	Traditional (Backfilling, HEFT, Tetris, NSGA-II)
-2.) 	ML-enhanced (GreenDRL, RLSchert, Flux)
-📁 Dataset
-# AIMS operates on large-scale HPC logs. Included datasets (public trace-compatible format):
-a) 	ANL-ALCF-MACHINESTATUS-AURORA_20250127_20250430.csv.gz
-b) 	ANL-ALCF-DJC-POLARIS_20240101_20241031.csv.gz
-c) 	ANL-ALCF-DJC-MIRA_20190101_20191231.csv.gz
-d) 	ANL-ALCF-DJC-COOLEY_20190101_20191231.csv.gz
-# Each record includes job runtime, walltime, energy use, core usage, node allocation, and exit status.
-# Setup Instructions
-1.) Clone the Repository
-# bash
-# git clone https://github.com/your-username/aims-scheduler.git
-# cd aims-scheduler
-2.) Install Dependencies
-# bash
-# pip install -r requirements.txt
-# Dependencies include torch, numpy, pandas, and scikit-learn. GPU acceleration (CUDA) is optional but recommended.
-3.) Add Datasets
-# Place your dataset files in the root directory. Make sure the filenames match those in Config.DATASET_FILES or modify the config accordingly. You can access the dataset using this url: https://reports.alcf.anl.gov/data/index.html
-# Running the Scheduler
-# Run the main training loop (assuming you've wrapped AIMSScheduler.train() into a script):
-# bash
-# python run_aims.ipynb
-# You can also evaluate baseline schedulers independently using:
-# bash
-# python eval_baselines.py
-# (Modify run_aims.py and eval_baselines.py to suit your experimental setup.)
-#  Reproducibility
-# AIMS supports reproducible experiments via:
-a)	Fixed random seeds (np, torch)
-b) 	Dataset chunking and caching for memory efficiency
-c) 	Configurable parameters via Config class
-d) 	Modular architecture for easy ablation and benchmarking
-#  replicate reported results:
-1.)	Use the provided datasets
-2.)	Maintain Config as-is
-3.)	Run training for 10k+ steps (or as described in the paper)
-4.)	Compare metrics: energy efficiency, reliability, throughput, variability
-# Evaluation Metrics
-# AIMS evaluates scheduling policies using:
-# Metric	Description
-# Energy Efficiency	Energy consumed per job
-# System Reliability	Fault prediction accuracy
-# Job Throughput	Jobs completed per time unit
-# Performance Variability	Std. deviation in job completion time
-# Makespan	Total time to complete all jobs
-# All values are logged for comparison across schedulers.
+# AIMS (Adaptive Intelligent Multi-objective Scheduling System) is an advanced HPC (High Performance Computing) scheduler that integrates Digital Twin technology with Deep Reinforcement Learning for multi-objective optimization. The system optimizes three key objectives:
+
+1.) Energy Efficiency: Minimizing power consumption and carbon footprint
+2.) Performance: Maximizing computational throughput and resource utilization
+3.) Reliability: Reducing system failures and ensuring fault tolerance
+
+# Features
+# Digital Twin Integration
+
+1.) Predictive Fault Model: Anticipates system failures before they occur
+2.) Energy Prediction Model: Forecasts power consumption patterns
+3.) Performance Prediction Model: Estimates job execution characteristics
+4.) Thermal Model: Monitors and predicts system temperature dynamics
+
+#  Advanced AI Components
+
+1.) Dueling DQN: State-of-the-art deep reinforcement learning architecture
+2.) Multi-objective Optimization: Simultaneous optimization of competing objectives
+3.) Uncertainty-aware Decision Making: Incorporates prediction uncertainty into scheduling decisions
+4.) Memory-efficient Implementation: Optimized for Google Colab and resource-constrained environments
+
+# Real-world Dataset Support
+
+1.) Compatible with ANL-ALCF HPC datasets
+2.) Supports multiple data formats (CSV, compressed files)
+3.) Automatic data preprocessing and feature engineering
+4.) Synthetic data generation for testing when real data is unavailable
+
+# Dataset Information
+# This project uses the ANL-ALCF HPC Workload Dataset available from IEEE DataPort:
+
+# https://ieee-dataport.org/documents/argonne-leadership-computing-facility-data-catalog
+# Description: Real-world HPC workload traces from Argonne National Laboratory's Leadership Computing Facility
+# Systems Included: Aurora, Polaris, Mira, Cooley supercomputers
+# Time Period: 2019-2025 (varies by system)
+
+# Quick Start
+# Option 1: Google Colab (Recommended)
+# Click the "Open in Colab" badge above or use this direct link:
+# AIMS_Scheduler_DigitalTwin.ipynb - Colab
+# Option 2: Local Installation
+# Prerequisites
+
+# Python 3.7+
+# PyTorch 1.9+
+# CUDA (optional, for GPU acceleration)
+
+# Installation Steps
+1.) Clone the repository:
+# git clone https://github.com/myandelaepu/AIMS_Scheduler_DigitalTwin.git
+# cd AIMS_Scheduler_DigitalTwin
+2.) Install dependencies:
+# pip install torch torchvision numpy pandas scikit-learn matplotlib seaborn
+
+3.) Download the dataset (optional):
+a) Visit IEEE DataPort or https://reports.alcf.anl.gov/data/index.html
+b) Download the ANL-ALCF dataset files
+c) Place them in the project directory
+
+4.) Run the system:
+# python AIMS_Scheduler_DigitalTwin.py
+# System Architecture
+
+┌─────────────────────────────────────────────────────────────┐
+│                    AIMS Architecture                        │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────────┐    ┌─────────────────┐                │
+│  │   Data Loader   │    │ Digital Twin    │                │
+│  │  - HPC Datasets │    │ - Fault Model   │                │
+│  │  - Preprocessing│    │ - Energy Model  │                │
+│  │  - Feature Eng. │    │ - Perf Model    │                │
+│  └─────────────────┘    │ - Thermal Model │                │
+│           │              └─────────────────┘                │
+│           ▼                       │                         │
+│  ┌─────────────────┐              ▼                         │
+│  │ HPC Environment │    ┌─────────────────┐                │
+│  │ - Job Queue     │◄───┤  Dueling DQN    │                │
+│  │ - System State  │    │ - Feature Ext.  │                │
+│  │ - Multi-obj     │    │ - Value Stream  │                │
+│  │   Rewards       │    │ - Advantage     │                │
+│  └─────────────────┘    └─────────────────┘                │
+│                                   │                         │
+│                          ┌─────────────────┐                │
+│                          │ Replay Buffer   │                │
+│                          │ - Experience    │                │
+│                          │ - Memory Opt.   │                │
+│                          └─────────────────┘                │
+└─────────────────────────────────────────────────────────────┘
+
+# Key Components
+1.)  MemoryEfficientDataLoader
+Handles large-scale HPC datasets with memory optimization:
+
+# Supports compressed files (.gz)
+# Automatic data sampling for memory constraints
+# Feature engineering for HPC-specific metrics
+# Synthetic data generation fallback
+
+2.)  DigitalTwinModels
+Four specialized neural networks for system prediction:
+
+# Fault Model: Binary classification for failure prediction
+# Energy Model: Regression for power consumption estimation
+# Performance Model: Regression for execution time prediction
+# Thermal Model: Regression for temperature forecasting
+
+3.) DuelingDQN
+Advanced deep reinforcement learning agent:
+
+# Separates value and advantage estimation
+# Dropout regularization for robustness
+# Optimized for multi-objective decision making
+
+4.)  HPCEnvironment
+Simulates HPC scheduling environment:
+
+# Job queue management
+# Multi-objective reward calculation
+# System state tracking
+# Realistic failure scenarios
+
+# Configuration
+# Training Parameters
+
+# RL Training
+num_episodes          
+batch_size           
+learning_rate     
+epsilon_decay     
+target_update_freq    
+
+# Multi-objective Weights
+objective_weights 
+
+# Memory Optimization
+sample_fraction 
+replay_buffer_size
+
+# Model Architecture
+# Digital Twin Models
+input_dim 
+hidden_dim 
+dropout_rate 
+
+# Dueling DQN
+state_dim 
+action_dim 
+dqn_hidden_dim 
+
+# Evaluation Mode
+# Disable exploration for evaluation
+aims.epsilon = 0.0
+
+# Run evaluation
+eval_rewards = []
+for _ in range(10):
+    reward = aims.train_episode(env, max_steps=100)
+    eval_rewards.append(reward)
+
+avg_reward = np.mean(eval_rewards)
+std_reward = np.std(eval_rewards)
+print(f"Evaluation: {avg_reward:.3f} ± {std_reward:.3f}")
+
+# Performance Metrics
+The system tracks multiple performance indicators:
+
+1. # Training Convergence: Episode rewards over time
+2. # Multi-objective Performance: Individual objective scores
+3. # Digital Twin Accuracy: Prediction error rates
+4. # Computational Efficiency: Training time and memory usage
+5. # Scheduling Quality: Job completion rates and system utilization
+
+# Memory Optimization
+AIMS is designed for resource-constrained environments:
+
+1. # Gradient Accumulation: Efficient batch processing
+2. # Memory Cleanup: Automatic garbage collection
+3. # Data Sampling: Intelligent dataset reduction
+4. # Model Compression: Compact neural network architectures
+5. # CUDA Optimization: GPU memory management
+
+# Troubleshooting
+# Common Issues
+
+1.  CUDA Out of Memory
+# Reduce batch size
+aims.batch_size = n
+
+# Enable memory cleanup
+torch.cuda.empty_cache()
+
+2. Dataset Loading Errors:
+# Use synthetic data if datasets unavailable
+data_loader = MemoryEfficientDataLoader([], sample_fraction=0.1)
+
+3. Training Instability
+# Reduce learning rate
+aims.optimizer = optim.Adam(aims.q_network.parameters(), lr=5e-4)
+
+# Increase target update frequency
+aims.target_update_freq = 5
+
+# Performance Tips
+# Use GPU acceleration when available
+# Adjust sample_fraction based on available memory
+# Monitor training curves for convergence
+# Experiment with different objective weight combinations
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
